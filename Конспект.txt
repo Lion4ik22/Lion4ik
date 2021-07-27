@@ -237,6 +237,10 @@ git add -A - добавить все файлы из рабочей папки
 git add main.css - добавить определённый файлы
 git add *css - добавить все файлы с форматом .css 
 git remote add origin https://github.com/Lion4ik22/project.git - подключить сразу на github
-git push -u origin master - отправка на сервер (но сейчас вместо master используют main)
+git push -u origin main - отправка на сервер (но сейчас вместо master используют main)
 
-                                         Урок №12 Начало практики!!
+                                         Урок №12 Начало практики!
+Сделаны задачи в файле praktika.js
+
+                                         Урок №13 Условия
+                                         
