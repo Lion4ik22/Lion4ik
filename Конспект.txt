@@ -662,3 +662,53 @@ function writeYourGenres() {
 }
 
 writeYourGenres();
+
+                                         Урок №19 Callback - функции
+Главное правило функции - если функции идут в коде одна за другой, это не значит, что они выполняются в такой же последовательности
+Пример функции задержки:
+function first() {
+    // Do something
+    setTimeout(function() {
+        console.log(1);
+    }, 500);
+}
+
+function second() {
+    console.log(2);
+}
+
+first();
+second();
+В консоль выведет 2, а потом 1. Т.к. есть задержка в 500 мск.
+
+Что такое Callback - это функция, которая должна быть выполнена после того, как другая функция завершила своё выполнение.
+Пример:
+function learnJS(lang, callback) {
+    console.log(`Я учу: ${lang}`);
+    callback();
+}
+
+learnJS('JavaScript', function() {
+    console.log('Я прошёл этот урок!');
+});
+Ответ: 
+Я учу: JavaScript
+Я прошёл этот урок!
+Таким образом должна соблюдаться последовательность функций.
+
+Или вариант без анонимной функции:
+function learnJS(lang, callback) {
+    console.log(`Я учу: ${lang}`);
+    callback();
+}
+
+function done() {
+    console.log('Я прошёл этот урок!');
+}
+
+learnJS('JavaScript', done);
+Ответ:
+Я учу: JavaScript
+Я прошёл этот урок!
+
+Итог: Callback позволяет нам быть увереным в том, что определённый код не начнёт исполнение до того момента, пока другой код не завершит своё исполнение.
