@@ -712,3 +712,328 @@ learnJS('JavaScript', done);
 Я прошёл этот урок!
 
 Итог: Callback позволяет нам быть увереным в том, что определённый код не начнёт исполнение до того момента, пока другой код не завершит своё исполнение.   
+
+                                         Урок №20 Объекты, деструктуризация объектов (ES6)
+Как удалить свойство из объекта ?
+const options = {
+    name: 'test',
+    width: 1024,
+    height: 1024,
+    colors: {
+        border: 'black', 
+        bg: 'red'
+    }
+};
+
+console.log(options.name);
+
+delete options.name;
+
+console.log(options);
+Ответ:
+test
+{ width: 1024, height: 1024, colors: { border: 'black', bg: 'red' } }
+Хоть мы работаем с константой, но при этом объект, который находится внутри мы модифицируем по собстенному желанию.
+
+Прямых констант в js не существет.
+
+Как перебрать свойства объекта ?
+const options = {
+    name: 'test',
+    width: 1024,
+    height: 1024,
+    colors: {
+        border: 'black', 
+        bg: 'red'
+    }
+};
+
+// console.log(options.name);
+
+// delete options.name;
+
+// console.log(options);
+
+for (let key in options) {
+    console.log(`Свойство ${key} имеет значение ${options[key]}`);
+}
+Ответ:
+Свойство name имеет значение test
+Свойство width имеет значение 1024
+Свойство height имеет значение 1024
+Свойство colors имеет значение [object Object]
+
+Кроме способа перебора for in есть ещё способ перебора for of. Но для объекта он работать не будет.
+Пример:
+const options = {
+    name: 'test',
+    width: 1024,
+    height: 1024,
+    colors: {
+        border: 'black', 
+        bg: 'red'
+    }
+};
+
+// console.log(options.name);
+
+// delete options.name;
+
+// console.log(options);
+
+for (let key of options) {
+    console.log(`Свойство ${key} имеет значение ${options[key]}`);
+}
+Ответ: Ошибка. options is not iterable
+
+Что такое Свойство colors имеет значение [object Object] ?
+Это объект внутри объекта. С таким нужно уметь работать.
+
+Как получить свойство объекта внутри объекта ? (Просто пример).
+const options = {
+    name: 'test',
+    width: 1024,
+    height: 1024,
+    colors: {
+        border: 'black', 
+        bg: 'red'
+    }
+};
+
+console.log(options ['colors'] ['border']);
+Ответ: black.
+
+Или пример сложнее:
+const options = {
+    name: 'test',
+    width: 1024,
+    height: 1024,
+    colors: {
+        border: 'black', 
+        bg: 'red'
+    }
+};
+
+console.log(options ['colors'] ['border']);
+
+// delete options.name;
+
+// console.log(options);
+
+for (let key in options) {
+    if (typeof(options[key]) === 'object') {
+        for (let i in options[key]) {
+            console.log(`Свойство ${i} имеет значение ${options[key] [i]}`); 
+        }
+    }
+    else {
+        console.log(`Свойство ${key} имеет значение ${options[key]}`);
+    }
+}
+Ответ:
+black
+Свойство name имеет значение test
+Свойство width имеет значение 1024
+Свойство height имеет значение 1024
+Свойство border имеет значение black
+Свойство bg имеет значение red
+
+Функции и методы, которые есть внутри объекта.
+
+Приём счетчика.
+const options = {
+    name: 'test',
+    width: 1024,
+    height: 1024,
+    colors: {
+        border: 'black', 
+        bg: 'red'
+    }
+};
+
+console.log(options ['colors'] ['border']);
+
+// delete options.name;
+
+// console.log(options);
+
+let counter = 0;
+
+for (let key in options) {
+    if (typeof(options[key]) === 'object') {
+        for (let i in options[key]) {
+            console.log(`Свойство ${i} имеет значение ${options[key] [i]}`); 
+            counter++;
+        }
+    }
+    else {
+        console.log(`Свойство ${key} имеет значение ${options[key]}`);
+        counter++;
+    }
+}
+console.log(counter);
+Ответ:
+black
+Свойство name имеет значение test
+Свойство width имеет значение 1024
+Свойство height имеет значение 1024
+Свойство border имеет значение black
+Свойство bg имеет значение red
+5
+
+Либо же мы хотим получить только на самом верхнем уровне, то нужно оставить counter++ только в одном месте:
+const options = {
+    name: 'test',
+    width: 1024,
+    height: 1024,
+    colors: {
+        border: 'black', 
+        bg: 'red'
+    }
+};
+
+console.log(options ['colors'] ['border']);
+
+// delete options.name;
+
+// console.log(options);
+
+let counter = 0;
+
+for (let key in options) {
+    if (typeof(options[key]) === 'object') {
+        for (let i in options[key]) {
+            console.log(`Свойство ${i} имеет значение ${options[key] [i]}`); 
+        }
+    }
+    else {
+        console.log(`Свойство ${key} имеет значение ${options[key]}`);
+        counter++;
+    }
+}
+console.log(counter);
+Ответ:
+black
+Свойство name имеет значение test
+Свойство width имеет значение 1024
+Свойство height имеет значение 1024
+Свойство border имеет значение black
+Свойство bg имеет значение red
+3
+Почему 3 ? Потому что когда мы наткнулись на colors здесь уже пошёл объект и у нас условие пошло по другой вилке.
+Классический метод того, чтобы узнать какое количество свойств находится в объекте:
+const options = {
+    name: 'test',
+    width: 1024,
+    height: 1024,
+    colors: {
+        border: 'black', 
+        bg: 'red'
+    }
+};
+
+// console.log(options ['colors'] ['border']);
+
+// delete options.name;
+
+// console.log(options);
+
+let counter = 0;
+
+for (let key in options) {
+    // if (typeof(options[key]) === 'object') {
+    //     for (let i in options[key]) {
+    //         console.log(`Свойство ${i} имеет значение ${options[key] [i]}`); 
+    //     }
+    // }
+    // else {
+    //     console.log(`Свойство ${key} имеет значение ${options[key]}`);
+        counter++;
+    // }
+}
+console.log(counter);
+Ответ:4
+
+Переходим к методам, которые используются у объектов.
+
+Первый метод Object,keys 
+Этот метод берёт наш объект и на его основании создаёт массив в котором все элементы это ключи находящиеся на первой части пары ключ значений у объектов.
+const options = {
+    name: 'test',
+    width: 1024,
+    height: 1024,
+    colors: {
+        border: 'black', 
+        bg: 'red'
+    }
+};
+
+console.log(Object.keys(options));
+Ответ: [ 'name', 'width', 'height', 'colors' ]
+
+Нужно вспомнить что у строк и у массивов есть свойство lenght. Которое можно использовать для того, чтобы узнать какое количество элементов там содержится.
+Пример:
+const options = {
+    name: 'test',
+    width: 1024,
+    height: 1024,
+    colors: {
+        border: 'black', 
+        bg: 'red'
+    }
+};
+
+console.log(Object.keys(options).length);
+Ответ: 4.
+
+Так же мы можем создавать такие методы вручную.
+Методы - это действия, которые может совершать наш объект.
+const options = {
+    name: 'test',
+    width: 1024,
+    height: 1024,
+    colors: {
+        border: 'black', 
+        bg: 'red'
+    },
+    makeTest: function() {
+        console.log('Test');
+    }
+};
+
+options.makeTest();
+
+Объекты - это структуры, которые могут сохранять в себе абсолютно любые типы данных в формате ключ:значение.
+Они так же могут быть вложенные. Объекты в объекты, массивы в объекты и т.д.
+Чтобы их перебрать мы можем использовать такую конструкцию как for in. И внутри делать всё что угодно как с ключами, так и со значениями этих ключей.
+Получать обычные свойства мы можем либо через точку, либо через квадратные [] скобки.
+У объектов бывают встроенные методы и свойства. 
+Для того, чтобы объект наш умел что-то делать, мы можем во внутрь него записывать функции. И таким образом мы будем создавать методы нашего объекта.
+
+Деструктуризация объекта.
+Мы будем вытаскиывать переменные в качестве отдельных структур.
+Пример:
+const {border, bg} = options.colors;
+Мы вытащили кусочки (свойства (border, bg)), которые находятся во вложенном объекте в качестве отдельной переменной.
+Пример наглядный:
+const options = {
+    name: 'test',
+    width: 1024,
+    height: 1024,
+    colors: {
+        border: 'black', 
+        bg: 'red'
+    },
+    makeTest: function() {
+        console.log('Test');
+    }
+};
+
+options.makeTest();
+
+const {border, bg} = options.colors;
+console.log(border);
+Ответ: Test и black.
+
+Всё, что существует в js идёт от объектов.
+JavaScript считается объектно-ориентированным языком и все сущности которые в нём есть сводятся к объектам.
