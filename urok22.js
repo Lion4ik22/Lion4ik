@@ -38,7 +38,7 @@ const numbers = {
         x: 7,
         y: 4
     }
-}
+};
 
 const newNumbers = copy(numbers);
 
@@ -90,6 +90,6 @@ const newAarray = [...array];
 const q = {
     one: 1,
     two: 2
-}
+};
 
 const newObj = {...q};
