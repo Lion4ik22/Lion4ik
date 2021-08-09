@@ -1039,7 +1039,7 @@ console.log(border);
 JavaScript считается объектно-ориентированным языком и все сущности которые в нём есть сводятся к объектам.
 Либо правильнее назвать js прототипно-ориентированным.
 
-                                         Урок №20 Массивы и псевдомассивы
+                                         Урок №21 Массивы и псевдомассивы
 
 1-й метод - arr.pop();
 Он удаляет последние элементы из нашего массива.
@@ -1165,3 +1165,344 @@ function compareNum(a, b) {
 Псевдомассив.
 У псевдомассивов не будет вообще никаких методов (forEach, filtr, push, join и т.д).
 Это просто структура, которая хранит данные по порядку.
+
+                                         Урок №22 Передача по ссылке или по значению, Spread оператор (ES6-ES9)
+let a = 5,
+    b = a;
+
+b = b + 5;
+
+console.log(b);
+console.log(a);
+Ответ: 
+10
+5
+
+const obj = {
+    a: 5,
+    b: 1
+};
+
+const copy = obj;
+
+copy.a = 10;
+
+console.log(copy);
+console.log(obj);
+Ответ:
+{ a: 10, b: 1 }
+{ a: 10, b: 1 }
+
+Почему так произошло ?
+Потому что в const copy = obj; не кладётся какой-то новый объект который похож или идентичен структуре внутри. Здесь передаётся значенеи по ссылке.
+Эта запись означает, что она передаёт не саму структуру объекта, а именно ссылку.
+В переменную copy кладётся ссылка на уже существуюший объект.
+И так получается, что мы модифицируя копию мы модифицируем наш изначальный объект.
+Потому что мы работаем не с копией этого объекта, а именно ссылкой на предыдущую структуру.
+И такое поведение называется "Передача по ссылке".
+
+Как же тогда создавать копии объектов, массивов и т.д ?
+Для этого существует несколько способов.
+
+1-й способ - использование цикла.
+Создадим функцию, которая будет при помощи цикла создавать новый объект уже перебирая старые свойства, которые уже были в нашем объекте.
+Пример:
+function copy(mainObj) {
+    let objCopy = {};
+
+    let key;
+    for (key in mainObj) {
+        objCopy[key] = mainObj [key];
+    }
+
+    return objCopy;
+}
+
+const numbers = {
+    a: 2,
+    b: 5,
+    c: {
+        x: 7,
+        y: 4
+    }
+}
+
+const newNumbers = copy(numbers);
+
+newNumbers.a = 10;
+
+console.log(newNumbers);
+console.log(numbers);
+
+Ответ:
+{ a: 10, b: 5, c: { x: 7, y: 4 } }
+{ a: 2, b: 5, c: { x: 7, y: 4 } }
+
+Если к примеру выше добавить newNumbers.c.x = 10; и вывести в консоль результат, то ответ будет:
+{ a: 10, b: 5, c: { x: 10, y: 4 } }
+{ a: 2, b: 5, c: { x: 10, y: 4 } }
+Т.е. x поменялся сразу в обоих местах.
+Нужно запомнить, что когда мы клонируем так объекты есть два очень важных понятия.
+Это глубокие и поверхонстные копии объектов.
+Сейчас мы создали поверхностную копию. Потому что она берёт все обычные свойства, которые были в родителе и создаёт как бы независимую структуру.
+Но когда появляется вложенная структура, например одно из свойств будет содержать объект, массив и т.д. То это свойство опять же будет иметь ссылочный тип данных.
+Т.е. где мы в newNumbers обратились к c, мы на самом деле обратились к объекту
+    c: {
+        x: 7,
+        y: 4
+    }
+Потому что там сохранилась на него ссылка.
+Это и называется поверхностная копия объекта.
+
+2-й способ - Object.assign
+Он позвоялет соеденить сразу несколько объектов.
+Пример:
+'use strict';
+
+// let a = 5,
+//     b = a;
+
+// b = b + 5;
+
+// console.log(b);
+// console.log(a);
+
+// const obj = {
+//     a: 5,
+//     b: 1
+// };
+
+// const copy = obj; // Передаёт ссылку
+
+// copy.a = 10;
+
+// console.log(copy);
+// console.log(obj);
+
+function copy(mainObj) {
+    let objCopy = {};
+
+    let key;
+    for (key in mainObj) {
+        objCopy[key] = mainObj [key];
+    }
+
+    return objCopy;
+}
+
+const numbers = {
+    a: 2,
+    b: 5,
+    c: {
+        x: 7,
+        y: 4
+    }
+}
+
+const newNumbers = copy(numbers);
+
+newNumbers.a = 10;
+newNumbers.c.x = 10;
+
+console.log(newNumbers);
+console.log(numbers);
+
+const add = {
+    d: 17,
+    e: 20
+};
+
+console.log(Object.assign(numbers, add));
+Ответ:
+{ a: 10, b: 5, c: { x: 10, y: 4 } }
+{ a: 2, b: 5, c: { x: 10, y: 4 } }
+{ a: 2, b: 5, c: { x: 10, y: 4 }, d: 17, e: 20 }
+Итого 2 объекта у нас соеденились.
+И сейчас мы создали независимую, поверхонстную копию объекта.
+
+Или пример:
+'use strict';
+
+// let a = 5,
+//     b = a;
+
+// b = b + 5;
+
+// console.log(b);
+// console.log(a);
+
+// const obj = {
+//     a: 5,
+//     b: 1
+// };
+
+// const copy = obj; // Передаёт ссылку
+
+// copy.a = 10;
+
+// console.log(copy);
+// console.log(obj);
+
+function copy(mainObj) {
+    let objCopy = {};
+
+    let key;
+    for (key in mainObj) {
+        objCopy[key] = mainObj [key];
+    }
+
+    return objCopy;
+}
+
+const numbers = {
+    a: 2,
+    b: 5,
+    c: {
+        x: 7,
+        y: 4
+    }
+}
+
+const newNumbers = copy(numbers);
+
+newNumbers.a = 10;
+newNumbers.c.x = 10;
+
+// console.log(newNumbers);
+// console.log(numbers);
+
+const add = {
+    d: 17,
+    e: 20
+};
+
+const clone = (Object.assign({}, add));
+
+clone.d = 20;
+
+console.log(add);
+console.log(clone); 
+Ответ:
+{ d: 17, e: 20 }
+{ d: 20, e: 20 }
+Тут мы создали пустой объект и присоединили к нему другой.
+
+3-й метод. 
+Как создать поверхонстную копию в массивах ?
+'use strict';
+
+// let a = 5,
+//     b = a;
+
+// b = b + 5;
+
+// console.log(b);
+// console.log(a);
+
+// const obj = {
+//     a: 5,
+//     b: 1
+// };
+
+// const copy = obj; // Передаёт ссылку
+
+// copy.a = 10;
+
+// console.log(copy);
+// console.log(obj);
+
+function copy(mainObj) {
+    let objCopy = {};
+
+    let key;
+    for (key in mainObj) {
+        objCopy[key] = mainObj [key];
+    }
+
+    return objCopy;
+}
+
+const numbers = {
+    a: 2,
+    b: 5,
+    c: {
+        x: 7,
+        y: 4
+    }
+}
+
+const newNumbers = copy(numbers);
+
+newNumbers.a = 10;
+newNumbers.c.x = 10;
+
+// console.log(newNumbers);
+// console.log(numbers);
+
+const add = {
+    d: 17,
+    e: 20
+};
+
+const clone = (Object.assign({}, add));
+
+clone.d = 20;
+
+// console.log(add);
+// console.log(clone); 
+
+const oldArray = ['a', 'b', 'c'];
+const newArray = oldArray.slice();
+
+newArray[1] = 'asdasda';
+console.log(newArray);
+console.log(oldArray);
+Ответ:
+[ 'a', 'asdasda', 'c' ]
+[ 'a', 'b', 'c' ]
+
+4-й способ - использование оператора разворота.
+
+const video = ['youtube', 'vimeo', 'rutube'],
+      blogs = ['wordpress', 'livejournal', 'blogger'],
+      internet = [...video, ...blogs, 'vk', 'facebook'];
+
+      console.log(internet);
+Ответ:
+[
+  'youtube',
+  'vimeo',
+  'rutube',
+  'wordpress',
+  'livejournal',
+  'blogger',
+  'vk',
+  'facebook'
+]
+
+Или пример посложнее.
+function log(a, b, c) {
+    console.log(a);
+    console.log(b);
+    console.log(c);
+}
+
+const num = [2, 5, 7];
+
+log(...num);
+Ответ:
+2
+5
+7
+
+5-й способ - спрэй оператор
+const array = ['a', 'b'];
+
+const newAarray = [...array];
+
+const q = {
+    one: 1,
+    two: 2
+}
+
+const newObj = {...q};
