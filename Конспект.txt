@@ -1506,3 +1506,78 @@ const q = {
 }
 
 const newObj = {...q};
+
+                                         Урок №23 Основы ООП(объектно-ориентированное программирование), прототипно-ориентированное наследование
+Смысл ООП в том, что мы представляем любую вещь как объект. С набором свойств методов.
+
+let str = 'some';
+let strObj = new String(str);
+
+console.log(typeof(str));
+console.log(typeof(strObj));
+Ответ:
+string (строка)
+object (объект)
+
+Любые конструкции прототипно у нас наследуются от объекта.
+
+Как создать прототип объекта.
+1-й способ (устаревший):
+
+const soldier = {
+    health: 400,
+    armor: 100
+};
+
+const john = {
+    health: 100
+};
+
+john.__proto__ = soldier;
+
+console.log(john.armor);
+Ответ: 100
+
+2-й способ (актуальный). Устанавливаем прототив от john до soldier:
+const soldier = {
+    health: 400,
+    armor: 100,
+    sayHello: function() {
+        console.log('Hello');
+    }
+};
+
+const john = {
+    health: 100
+};
+
+// john.__proto__ = soldier;
+
+Object.setPrototypeOf(john, soldier);
+
+// console.log(john.armor);
+john.sayHello();
+Ответ: Hello
+
+Вариант с созданием:
+
+const soldier = {
+    health: 400,
+    armor: 100,
+    sayHello: function() {
+        console.log('Hello');
+    }
+};
+
+const john = Object.create(soldier);
+
+// const john = {
+//     health: 100
+// };
+
+// john.__proto__ = soldier;
+
+Object.setPrototypeOf(john, soldier);
+
+// console.log(john.armor);
+john.sayHello();
