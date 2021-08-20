@@ -1667,7 +1667,7 @@ const personalMovieDB = {
     
 };
 
-Урок №25 Отлавливаем ошибки в своем коде при помощи консоли
+                                            Урок №25 Отлавливаем ошибки в своем коде при помощи консоли
 разработчика. Breakpoints
 'use strict';
 
@@ -1692,3 +1692,59 @@ function compareNum(a, b) {
 }
 
 console.log(sorted);
+
+                                            Урок №26 Динамическая типизация в JS
+Динамическая типизация - это возможность переделывать один тип данных в другой.
+
+1-й способ:
+console.log(typeof(String(null))); - ответ String 
+console.log(String(null)); = ответ null 
+console.log(typeof(String(4))); - ответ string 
+
+1.2-й способ (Конкотинация). Т.е. сложение строки с чем-то
+console.log(typeof(5 + '')); - ответ string 
+
+const num = 5;
+
+console.log('https://vk.com/catalog/' + num);
+Ответ: https://vk.com/catalog/5
+
+2-й способ. Как превратить что угодно в число.
+console.log(typeof(Number('4'))); - ответ number
+
+2.2-й способ. Унарный плюс.
+console.log(typeof(+ '5')); - ответ number
+
+2.3-й способ.
+console.log(typeof(parseInt('15px', 10))); - ответ number
+
+Нужно запомнить. Всё что мы получаем от пользователя всегда будет типом данных строка.
+
+3.1-й способ. В булиновое значение.
+// 0, '', null, undefined, NaN; - всегда false.
+
+let switcher = null;
+
+if (switcher) {
+    console.log('Working...');
+}
+Ответ: ничего, т.к. switcher = null
+
+let switcher = null;
+
+if (switcher) {
+    console.log('Working...');
+}
+
+switcher = 1;
+
+if (switcher) {
+    console.log('Working...');
+}
+Ответ: Working... (т.е. работает)
+
+3.2-й способ
+console.log(typeof(Boolean('4'))); - ответ boolean
+
+3.3-й способ
+console.log(typeof(!!'44444')); - ответ boolean
