@@ -1793,3 +1793,50 @@ console.log(typeof(!!'44444')); - ответ boolean
 12) Чему равно 0 || '' || 2 || undefined || true || falsе ?
 Ответ: 2
 Т.к. ИЛИ запинается на правде, а тут это 2.
+
+                                            Урок №28 Получение элементов со страницы
+
+1-й метод - get element by id (через тег или класс)
+
+const box = document.getElementById('box');
+
+console.log(box);
+
+1.2-й метод 
+
+const btns = document.getElementsByTagName('button')[1];
+
+console.log(btns);
+Ответ: выведет только одну button №2.
+
+1.3-й метод 
+const btns = document.getElementsByTagName('button');
+
+console.log(btns[1]);
+Ответ: button №2
+
+1.4-й метод
+const circles = document.getElementsByClassName('circle');
+console.log(circles);
+
+2-й метод. Более современный. Всегда есть метод forEach. Но это всё равно псевдомассив.
+const hearts = document.querySelectorAll('.heart');
+
+console.log(hearts);
+
+hearts.forEach(item => {
+    console.log(item);
+})
+
+2.1-й метод (querySelector). Позволяет получить только один элемент со страницы (по очереди, т.е будет брать первый).
+const oneHeart = document.querySelector('.heart');
+console.log(oneHeart);
+
+Итоги: У нас есть методы, которые работают на объектной модели документов (documents) и работает только внутри браузера.
+У него есть 2 метода для того чтобы получить только один элемент (getElementById (по id) и querySelector(по очереди, т.е. первый попавшийся)).
+Так же мы можем получать html коллекции (псевдомассивы).
+Для этого у нас есть такие методы как (getElementsByTagName, getElementsByClassName, querySelectorAll).
+Здесь уже необходимо использовать какие-то индексы.
+Что мы передаем в круглые скобки ?
+Если ищем класс - точку ставить не надо.
+Если работаем с css селектором - точка нужна.
