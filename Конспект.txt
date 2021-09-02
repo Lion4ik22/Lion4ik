@@ -1840,3 +1840,30 @@ console.log(oneHeart);
 Что мы передаем в круглые скобки ?
 Если ищем класс - точку ставить не надо.
 Если работаем с css селектором - точка нужна.
+
+                                            Урок №29 Действия с элементами на странице
+// wrapper.append(div); вставляет в конец родителя
+// wrapper.appendChild(div); устаревший
+
+// wrapper.prepend(div); вставляет вначало родителя
+
+// hearts[0].before(div); вставить до
+// wrapper.insertBefore(div, hearts[0]); устаревший
+// hearts[0].after(div); вставить после
+
+// circles[0].remove(); удалить
+// wrapper.removeChild(hearts[1]); устаревший
+
+//hearts[0].replaceWith(circles[0]); заменить
+// wrapper.replaceChild(circles[0], hearts[0]); устаревший
+
+div.innerHTML = 'Hello world'; вставить текст в объект на странице (работает с html)
+div.textContent = 'Hello'; работает только с текстом
+
+div.insertAdjacentHTML('beforebegin', '<h2>Hello</h2>'); вставляет код перед элементом
+
+div.insertAdjacentHTML('afterbegin', '<h2>Hello</h2>'); вставляет в начало нашего элемента 
+
+div.insertAdjacentHTML('beforeend', '<h2>Hello</h2>'); вставялет в конец элемента 
+
+div.insertAdjacentHTML('afterend', '<h2>Hello</h2>'); вставляет после элемента
