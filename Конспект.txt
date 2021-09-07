@@ -1928,3 +1928,78 @@ movieDB.movies.forEach((film, i) => {
         </li>
     `;
 });
+
+                                            Урок №31 События и их обработчики
+События - это сигнал от браузера о том. что что-то у нас произошло.
+Обработчник - это функция которая срабатывает как только событие произошло.
+
+Есть 3 способа назначить обработчники событий.
+1) Использовать html атрибут который записывается прямо в вёрстке.
+<button onclick="alert('Click')" id="btn">Нажми меня</button>
+Данный способо практически не используется.
+
+2) Использовать свойство дом дерево для событий.
+const btn = document.querySelector('button');
+
+btn.onclick = function() {
+    alert('Click');
+};
+Такой способо так же используется редко.
+
+3)
+btn.addEventListener('click', () => {
+    alert('Click');
+});
+
+btn.addEventListener('click', () => {
+    alert('Second Click');
+});
+
+События в js выполняются в порядке очереди.
+
+e - это ивент (event)
+
+Всплытие событий - это когда обработчик событий сначала срабатывает на самом вложеном элементе, затем на родителе (если есть) и так выше и выше по иерархии.
+
+Как назначить обработчник событий один и тот же сразу на несколько элементов ?
+const btns = document.querySelectorAll('button'),
+      overlay = document.querySelector('.overlay');
+
+// btn.onclick = function() {
+//     alert('Click');
+// };
+
+// btn.onclick = function() {
+//     alert('Click');
+// };
+
+// let i = 0;
+const deleteElement = (e) => {
+    console.log(e.target);
+    console.log(e.type);
+    // i++;
+    // if (i == 1) {
+    //     btn.addEventListener('click', deleteElement);
+    // }
+};
+
+// btn.addEventListener('click', deleteElement);
+// overlay.addEventListener('click', deleteElement);
+
+btns.forEach(btn => {
+    btn.addEventListener('click', deleteElement);
+});
+
+const link = document.querySelector('a');
+
+link.addEventListener('click', function(event) {
+    event.preventDefault();
+
+    console.log(event.target);
+});
+
+Опции события.
+У addEventListener существует и 3-й аргумент 
+btns.forEach(btn => {
+    btn.addEventListener('click', deleteElement, {once: true});
+});
