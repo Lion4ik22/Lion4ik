@@ -2003,3 +2003,39 @@ link.addEventListener('click', function(event) {
 btns.forEach(btn => {
     btn.addEventListener('click', deleteElement, {once: true});
 });
+
+                                            Урок №32 Навигация по DOM - элементам, data-атрибуты, преимущество for/of
+console.log(document.head); - обратились к элементу body
+console.log(document.documentElement); - получили просто html-ку со всем содержимым которое в нём есть
+console.log(document.body.childNodes); - псевдомассив
+
+Родительским элементом счиатется тот, который объединяет другие, находящиеся внутри него (console.log(document.body.childNodes);)
+
+Разница между дом элементом и дом деревом.
+Каждая сущность которая находится на странице она по факту будет узлом. Но не каждый узел будет элементом.
+
+Методы при помощи которых можно путешествовать по дом дереву:
+console.log(document.body.firstChild); - первый ребёнок
+console.log(document.body.lastChild); - последний ребёнок 
+
+Методы чтобы получить родителей, соседей и детей:
+console.log(document.querySelector('#current').parentNode.parentNode); Ответ div.wrapper
+
+console.log(document.querySelector('[data-current="3"]').nextSibling); - следующий сосед
+console.log(document.querySelector('[data-current="3"]').previousSibling); - предыдущий сосед
+
+Аналогичные методы предыдущим:
+console.log(document.querySelector('[data-current="3"]').nextElementSibling); - получим 4-й listitem, т.е. следующйи элемент, а не ноду. Так же будет работать и с предыдущим.
+
+console.log(document.querySelector('#current').parentElement); - получим следующий элемент 
+
+console.log(document.body.firstElementChild); - получим первого ребенка (именно элемент)
+
+Как перебрать всех детей внутри body и оставить только элементы (не текстовые ноды и т.д) ?
+for (let node of document.body.childNodes) {
+    if (node.nodeName == '#text') {
+        continue;
+    }
+
+    console.log(node);
+}
