@@ -2347,3 +2347,16 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+                                            Урок 39. Скрипты и время их выполнения. setTimeout и setInterval
+Задержка задаётся в милисекундах. Т.е. 2 секунды = 2000 милисекунд.
+
+Пример создания задержки:
+const timerId = setTimeout(logger, 2000);
+
+function logger () {
+    console.log('text');   
+}
+
+clearInterval - сбросить задержку
+setInterval - задать постоянный таймер
